@@ -1,0 +1,21 @@
+from django.db import transaction
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
+
+@receiver(post_save, sender=User)
+def handle_user_save(sender, instance, **kwargs):
+    print("Signal handler: Starting...")
+    raise Exception("Simulated error in signal handler")
+    print("Signal handler: Completed.")  
+
+if __name__ == "__main__":
+    try:
+        with transaction.atomic():  
+            print("Saving user...")
+            new_user = User(username='testuser')
+            new_user.save() 
+            print("User saved successfully.")
+    except Exception as e:
+        print(f"Transaction rolled back due to: {e}")
