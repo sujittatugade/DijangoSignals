@@ -3,13 +3,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
-
 @receiver(post_save, sender=User)
 def handle_user_saved(sender, instance, **kwargs):
     print("Post-save signal received. Processing...")
     time.sleep(5) 
     print("Signal processing complete.")
-
 
 if __name__ == "__main__":
     print("Creating new user...")
