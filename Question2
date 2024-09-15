@@ -3,19 +3,19 @@ import threading
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-
+#To check thread ID by signal handler
 @receiver(post_save, sender=User)
 def on_user_saved(sender, instance, **kwargs):
     current_thread = threading.get_ident()
     print(f"Signal handled in thread: {current_thread}")
     time.sleep(2) 
     print("Signal handler completed.")
-
+#this code trigger signal
 if __name__ == "__main__":
     main_thread = threading.get_ident()
     print(f"Caller executing in thread: {main_thread}")
-
+#create new user
     print("Initiating user save operation...")
     new_user = User(username='sampleuser')
-    new_user.save() 
+    new_user.save() #trigger post_save signal
     print("User save complete, continuing execution.")
