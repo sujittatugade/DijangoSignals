@@ -3,19 +3,20 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
-
+#Signal handler to raise exception
 @receiver(post_save, sender=User)
 def handle_user_save(sender, instance, **kwargs):
     print("Signal handler: Starting...")
+#simulate exception
     raise Exception("Simulated error in signal handler")
-    print("Signal handler: Completed.")  
-
+    print("Signal handler: Completed.")  #can't reached
+#method for saving user in transaction
 if __name__ == "__main__":
     try:
         with transaction.atomic():  
             print("Saving user...")
             new_user = User(username='testuser')
-            new_user.save() 
+            new_user.save() # trigger post_save signal
             print("User saved successfully.")
     except Exception as e:
         print(f"Transaction rolled back due to: {e}")
