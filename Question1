@@ -2,15 +2,16 @@ import time
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-
+#code for signal receiver
 @receiver(post_save, sender=User)
 def handle_user_saved(sender, instance, **kwargs):
     print("Post-save signal received. Processing...")
     time.sleep(5) 
     print("Signal Processing Completed Now.")
-
+# this code just trigger the signal
 if __name__ == "__main__":
+#creating a new user
     print("Creating new user please wait...")
     new_user = User(username='sampleuser')
-    new_user.save() 
+    new_user.save() # this will trigger post_signal
     print("User Created, Execution Continues.")
